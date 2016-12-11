@@ -1,0 +1,24 @@
+﻿<Page x:Class="TumblrBrowser.Pages.LinkPostPage" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="using:TumblrBrowser.Pages" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:model="using:TumblrBrowser.Portable.Model" xmlns:interactivity="using:WinRTXamlToolkit.Interactivity" xmlns:behaviors="using:TumblrBrowser.Behaviors" xmlns:viewModel="using:TumblrBrowser.Portable.ViewModel" mc:Ignorable="d" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" d:DataContext="{d:DesignInstance viewModel:LinkViewModel}">
+
+  <Grid Margin="12">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
+    <Button Style="{StaticResource BackgroundButtonStyle}" Command="{Binding LinkClickCommand}" CommandParameter="{Binding Post.LinkUrl}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
+      <Grid Background="Blue">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <TextBlock Visibility="{Binding Post.Text, Converter={StaticResource ValueToVisibilityConverter}}" Text="{Binding Post.Text}" HorizontalAlignment="Stretch" TextAlignment="Center" Style="{StaticResource SubheaderTextBlockStyle}" Foreground="White" VerticalAlignment="Center" TextLineBounds="TrimToCapHeight" Margin="8 4 0 4" />
+        <SymbolIcon Grid.Column="1" Symbol="Play" Foreground="White" Margin="8" VerticalAlignment="Center" />
+      </Grid>
+    </Button>
+    <WebView Grid.Row="1" Margin="0 12 0 0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ScrollViewer.ZoomMode="Disabled" ScrollViewer.VerticalScrollMode="Disabled">
+      <interactivity:Interaction.Behaviors>
+        <behaviors:WebViewHtmlBinding HtmlString="{Binding Post.Description}" />
+      </interactivity:Interaction.Behaviors>
+    </WebView>
+  </Grid>
+</Page>

@@ -1,0 +1,31 @@
+﻿<Page x:Class="TumblrBrowser.Pages.PhotoPage" x:Name="rootPanel" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="using:TumblrBrowser.Pages" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:model="using:TumblrBrowser.Portable.Model" xmlns:interactivity="using:WinRTXamlToolkit.Interactivity" xmlns:behaviors="using:TumblrBrowser.Behaviors" xmlns:viewModel="using:TumblrBrowser.Portable.ViewModel" mc:Ignorable="d" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" d:DataContext="{d:DesignInstance viewModel:PhotoViewModel}">
+
+  <Grid>
+  <ScrollViewer Margin="12" >
+    <StackPanel Visibility="{Binding Ready, Converter={StaticResource ValueToVisibilityConverter}}">
+      <Image Visibility="{Binding Post.HasPhotoSet, Converter={StaticResource ValueToVisibilityConverter}, ConverterParameter=Reversed}" Source="{Binding Post.LargestPhoto.Url, Converter={StaticResource StringToImageSourceConverter}, FallbackValue={x:Null}}" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="UniformToFill" Margin="0 0 0 12">
+        <interactivity:Interaction.Behaviors>
+          <behaviors:ImageLoadedCommandBehavior Command="{Binding SetReadyCommand}" />
+        </interactivity:Interaction.Behaviors>
+      </Image>
+      <ItemsControl Margin="0 0 0 12" ItemsSource="{Binding Post.PhotoSet.Photos}" Visibility="{Binding Post.HasPhotoSet, Converter={StaticResource ValueToVisibilityConverter}}">
+        <ItemsControl.ItemTemplate>
+          <DataTemplate>
+            <Image Source="{Binding LargestPhoto.Url, Converter={StaticResource StringToImageSourceConverter}, FallbackValue={x:Null}}" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="UniformToFill" Margin="0 0 0 12">
+              <interactivity:Interaction.Behaviors>
+                <behaviors:ImageLoadedCommandBehavior Command="{Binding DataContext.SetReadyCommand, ElementName=rootPanel}" />
+              </interactivity:Interaction.Behaviors>
+            </Image>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+      <WebView Margin="0 12 0 0" Visibility="{Binding Post.Caption, Converter={StaticResource ValueToVisibilityConverter}}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ScrollViewer.ZoomMode="Disabled" ScrollViewer.VerticalScrollMode="Disabled" IsHitTestVisible="False">
+        <interactivity:Interaction.Behaviors>
+          <behaviors:WebViewHtmlBinding HtmlString="{Binding Post.Caption}" />
+        </interactivity:Interaction.Behaviors>
+      </WebView>
+    </StackPanel>
+  </ScrollViewer>
+    <ProgressRing Visibility="{Binding Ready, Converter={StaticResource ValueToVisibilityConverter}, ConverterParameter=Reversed}" IsActive="True" Width="40" Height="40" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+  </Grid>
+</Page>

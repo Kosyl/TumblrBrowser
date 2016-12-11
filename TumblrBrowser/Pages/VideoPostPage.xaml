@@ -1,0 +1,18 @@
+﻿<Page x:Class="TumblrBrowser.Pages.VideoPostPage" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="using:TumblrBrowser.Pages" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:model="using:TumblrBrowser.Portable.Model" xmlns:interactivity="using:WinRTXamlToolkit.Interactivity" xmlns:behaviors="using:TumblrBrowser.Behaviors" xmlns:viewModel="using:TumblrBrowser.Portable.ViewModel" mc:Ignorable="d" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" d:DataContext="{d:DesignInstance viewModel:VideoViewModel}">
+
+  <ScrollViewer>
+    <StackPanel Margin="12">
+      <Button Command="{Binding LinkClickCommand}" CommandParameter="{Binding Post.Url}">
+        <StackPanel>
+          <TextBlock Text="{Binding Source={StaticResource Localization}, Path=Localization.VideosNotSupportedMessage}" TextWrapping="Wrap"/>
+          <TextBlock Text="{Binding Post.Url}" Margin="0 8 0 0" Foreground="Blue"/>
+        </StackPanel>
+      </Button>
+      <WebView Margin="8" HorizontalAlignment="Stretch" VerticalAlignment="Top" ScrollViewer.ZoomMode="Disabled" ScrollViewer.VerticalScrollMode="Disabled">
+        <interactivity:Interaction.Behaviors>
+          <behaviors:WebViewHtmlBinding HtmlString="{Binding Post.Caption}" />
+        </interactivity:Interaction.Behaviors>
+      </WebView>
+    </StackPanel>
+  </ScrollViewer>
+</Page>

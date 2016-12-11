@@ -1,0 +1,52 @@
+﻿<Page x:Class="TumblrBrowser.Pages.PostsListPage" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="using:TumblrBrowser" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:viewModel="using:TumblrBrowser.Portable.ViewModel" xmlns:interactivity="using:WinRTXamlToolkit.Interactivity" xmlns:behaviors="using:TumblrBrowser.Behaviors" mc:Ignorable="d" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" d:DataContext="{d:DesignInstance viewModel:PostsListViewModel}">
+
+  <Grid Margin="12">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
+    <Grid Grid.Row="0">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="Auto" />
+      </Grid.ColumnDefinitions>
+      <TextBox Text="{Binding Username, Mode=TwoWay}" PlaceholderText="{Binding Localization.EnterUsernamePrompt, Source={StaticResource Localization}}" AcceptsReturn="False" />
+      <Button Grid.Column="1" Command="{Binding RefreshListCommand}" Margin="12 0 0 0">
+        <SymbolIcon Symbol="Refresh" />
+      </Button>
+    </Grid>
+    <Grid Grid.Row="1">
+      <Grid Visibility="{Binding Loading, Converter={StaticResource ValueToVisibilityConverter}, ConverterParameter=Reversed}">
+        <Grid Visibility="{Binding Posts.Count, Converter={StaticResource ValueToVisibilityConverter}, ConverterParameter=Reversed}" >
+          <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding Localization.NoPostsMessage, Source={StaticResource Localization}}" Style="{StaticResource GroupHeaderTextBlockStyle}" Visibility="{Binding Username, Converter={StaticResource ValueToVisibilityConverter}}"/>
+          <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding Localization.NoUsernameMessage, Source={StaticResource Localization}}" Style="{StaticResource GroupHeaderTextBlockStyle}" Visibility="{Binding Username, Converter={StaticResource ValueToVisibilityConverter}, ConverterParameter=Reversed}"/>
+        </Grid>
+      </Grid>
+      <ListView ItemsSource="{Binding Posts}" Margin="0 8 0 0" IsItemClickEnabled="True">
+        <interactivity:Interaction.Behaviors>
+          <behaviors:IncrementalLoadingBehavior LoadMoreObjectsCommand="{Binding LoadObjectsCommand}" />
+          <behaviors:ItemClickCommandBehavior Command="{Binding ItemClickCommand}"/>
+        </interactivity:Interaction.Behaviors>
+        <ListView.ItemTemplate>
+          <DataTemplate>
+            <Grid Height="48" Margin="0 0 0 8" Background="Transparent">
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="48" />
+                <ColumnDefinition Width="*" />
+              </Grid.ColumnDefinitions>
+              <Grid Background="Blue">
+                <Image Source="{Binding PostType, Converter={StaticResource PostTypeToImageSourceConverter}}" />
+                <Image Source="{Binding PhotoUrl, Converter={StaticResource StringToImageSourceConverter}, FallbackValue={x:Null}}" Visibility="{Binding PhotoUrl, Converter={StaticResource ValueToVisibilityConverter}}" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="UniformToFill" />
+              </Grid>
+              <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="8 0 0 0">
+                <TextBlock Text="{Binding PostDescription}" Style="{StaticResource BaseTextBlockStyle}" TextTrimming="CharacterEllipsis" MaxLines="1" TextLineBounds="TrimToCapHeight" Visibility="{Binding PostDescription, Converter={StaticResource ValueToVisibilityConverter}}" Margin="0 0 0 4" />
+                <TextBlock Text="{Binding Date}" TextLineBounds="TrimToCapHeight" />
+              </StackPanel>
+            </Grid>
+          </DataTemplate>
+        </ListView.ItemTemplate>
+      </ListView>
+    </Grid>
+    <ProgressBar IsIndeterminate="True" Grid.Row="1" VerticalAlignment="Bottom" Margin="0 0 0 4" HorizontalAlignment="Center" Visibility="{Binding Loading, Converter={StaticResource ValueToVisibilityConverter}}"/>
+  </Grid>
+</Page>

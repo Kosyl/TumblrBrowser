@@ -1,0 +1,15 @@
+﻿<Page x:Class="TumblrBrowser.Pages.ConversationPostPage" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="using:TumblrBrowser.Pages" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:model="using:TumblrBrowser.Portable.Model" xmlns:interactivity="using:WinRTXamlToolkit.Interactivity" xmlns:behaviors="using:TumblrBrowser.Behaviors" xmlns:viewModel="using:TumblrBrowser.Portable.ViewModel" mc:Ignorable="d" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" d:DataContext="{d:DesignInstance viewModel:ConversationViewModel}">
+
+  <ScrollViewer>
+    <ItemsControl Margin="12" ItemsSource="{Binding Post.Conversation.Lines}">
+      <ItemsControl.ItemTemplate>
+        <DataTemplate>
+          <StackPanel Margin="0 0 0 12">
+            <TextBlock Text="{Binding Label}" TextWrapping="WrapWholeWords" />
+            <TextBlock Text="{Binding Text}" Style="{StaticResource TitleTextBlockStyle}" TextWrapping="WrapWholeWords"/>
+          </StackPanel>
+        </DataTemplate>
+      </ItemsControl.ItemTemplate>
+    </ItemsControl>
+  </ScrollViewer>
+</Page>
